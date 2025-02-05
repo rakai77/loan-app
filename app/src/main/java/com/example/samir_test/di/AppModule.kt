@@ -4,8 +4,10 @@ import com.example.samir_test.data.remote.ApiService
 import com.example.samir_test.data.remote.resository.LoanRepositoryImpl
 import com.example.samir_test.domain.repository.LoanRepository
 import com.example.samir_test.domain.usecase.LoanUseCase
+import com.example.samir_test.presentation.screen.HomeViewModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -40,5 +42,7 @@ val appModule = module {
     single<LoanRepository> { LoanRepositoryImpl(get()) }
 
     single { LoanUseCase(get()) }
+
+    viewModel { HomeViewModel(get()) }
 
 }

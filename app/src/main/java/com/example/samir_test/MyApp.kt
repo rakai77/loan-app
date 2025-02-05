@@ -3,6 +3,7 @@ package com.example.samir_test
 import android.app.Application
 import com.example.samir_test.di.appModule
 import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 
 class MyApp : Application() {
@@ -11,6 +12,7 @@ class MyApp : Application() {
         super.onCreate()
         startKoin {
             androidContext(this@MyApp)
+            androidLogger()
             modules(appModule)
         }
     }
