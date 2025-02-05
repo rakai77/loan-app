@@ -59,6 +59,8 @@ dependencies {
     implementation(libs.compose.animation)
     implementation(libs.splash.api)
 
+    implementation(libs.gson)
+
     implementation(libs.bundles.koin)
     implementation(libs.bundles.networking)
 

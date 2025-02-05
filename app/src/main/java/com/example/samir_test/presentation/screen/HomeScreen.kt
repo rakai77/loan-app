@@ -1,5 +1,6 @@
 package com.example.samir_test.presentation.screen
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -26,11 +27,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.samir_test.domain.model.LoanData
+import com.google.gson.Gson
 import org.koin.androidx.compose.koinViewModel
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    onNavigateToDetail: (LoanData) -> Unit
+) {
 
     val viewModel: HomeViewModel = koinViewModel()
     val loanUiState by viewModel.loanUiState.collectAsState()
@@ -73,7 +79,14 @@ fun HomeScreen() {
                 is LoanUiState.SuccessGetLoan -> {
                     val loanList = (loanUiState as LoanUiState.SuccessGetLoan).item
                     items(loanList.size) { index ->
-                        LoanItemCard(loan = loanList[index])
+                        LoanItemCard(
+                            onNavigateToDetail = {
+                                val json = Gson().toJson(it)
+                                val encodedJson = URLEncoder.encode(json, StandardCharsets.UTF_8.toString())
+                                onNavigateToDetail.invoke(it)
+                            },
+                            loan = loanList[index]
+                        )
                     }
 
                 }
@@ -90,10 +103,16 @@ fun HomeScreen() {
 }
 
 @Composable
-fun LoanItemCard(loan: LoanData) {
+fun LoanItemCard(
+    onNavigateToDetail: (LoanData) -> Unit,
+    loan: LoanData
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
+            .clickable {
+                onNavigateToDetail(loan)
+            }
             .padding(horizontal = 16.dp, vertical = 8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
