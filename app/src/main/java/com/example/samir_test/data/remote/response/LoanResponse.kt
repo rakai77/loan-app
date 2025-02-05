@@ -1,5 +1,11 @@
 package com.example.samir_test.data.remote.response
 
+import com.example.samir_test.domain.model.BorrowerData
+import com.example.samir_test.domain.model.CollateralData
+import com.example.samir_test.domain.model.DocumentsData
+import com.example.samir_test.domain.model.InstallmentsData
+import com.example.samir_test.domain.model.LoadData
+import com.example.samir_test.domain.model.RepaymentScheduleData
 import com.google.gson.annotations.SerializedName
 
 
@@ -27,7 +33,7 @@ data class DocumentsResponse(
 	val url: String? = null
 )
 
-data class Borrower(
+data class BorrowerResponse(
 
 	@field:SerializedName("creditScore")
 	val creditScore: Int? = null,
@@ -57,7 +63,7 @@ data class LoanResponse(
 	val documents: List<DocumentsResponse>,
 
 	@field:SerializedName("borrower")
-	val borrower: Borrower? = null,
+	val borrower: BorrowerResponse? = null,
 
 	@field:SerializedName("term")
 	val term: Int? = null,
@@ -82,4 +88,43 @@ data class InstallmentsResponse(
 
 	@field:SerializedName("dueDate")
 	val dueDate: String? = null
+)
+
+fun InstallmentsResponse.toDomain() = InstallmentsData(
+	amountDue = amountDue ?: 0,
+	dueDate = dueDate ?: ""
+)
+
+fun RepaymentScheduleResponse.toDomain() = RepaymentScheduleData(
+	installments = installments.map { it.toDomain() }
+)
+
+fun BorrowerResponse.toDomain() = BorrowerData(
+	creditScore = creditScore ?: 0,
+	name = name ?: "",
+	id = id ?: "",
+	email = email ?: ""
+)
+
+fun DocumentsResponse.toDomain() = DocumentsData(
+	type = type ?: "",
+	url = url ?: ""
+)
+
+fun CollateralResponse.toDomain() = CollateralData(
+	type = type ?: "",
+	value = value ?: 0
+)
+
+fun LoanResponse.toDomain() = LoadData(
+	interestRate = interestRate ?: 0,
+	amount = amount ?: 0,
+	purpose = purpose ?: "",
+	documents = documents.map { it.toDomain() },
+	borrower = borrower?.toDomain() ?: BorrowerData(0, "", "", ""),
+	term = term ?: 0,
+	id = id ?: "",
+	collateral = collateral?.toDomain() ?: CollateralData("",0),
+	repaymentSchedule = repaymentSchedule?.toDomain() ?: RepaymentScheduleData(emptyList()),
+	riskRating = riskRating ?: "",
 )
