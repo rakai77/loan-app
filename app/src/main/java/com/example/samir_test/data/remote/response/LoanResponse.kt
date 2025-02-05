@@ -4,7 +4,7 @@ import com.example.samir_test.domain.model.BorrowerData
 import com.example.samir_test.domain.model.CollateralData
 import com.example.samir_test.domain.model.DocumentsData
 import com.example.samir_test.domain.model.InstallmentsData
-import com.example.samir_test.domain.model.LoadData
+import com.example.samir_test.domain.model.LoanData
 import com.example.samir_test.domain.model.RepaymentScheduleData
 import com.google.gson.annotations.SerializedName
 
@@ -116,7 +116,7 @@ fun CollateralResponse.toDomain() = CollateralData(
 	value = value ?: 0
 )
 
-fun LoanResponse.toDomain() = LoadData(
+fun LoanResponse.toDomain() = LoanData(
 	interestRate = interestRate ?: 0,
 	amount = amount ?: 0,
 	purpose = purpose ?: "",

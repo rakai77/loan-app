@@ -1,6 +1,9 @@
 package com.example.samir_test.di
 
 import com.example.samir_test.data.remote.ApiService
+import com.example.samir_test.data.remote.resository.LoanRepositoryImpl
+import com.example.samir_test.domain.repository.LoanRepository
+import com.example.samir_test.domain.usecase.LoanUseCase
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
@@ -10,14 +13,12 @@ import java.util.concurrent.TimeUnit
 
 val appModule = module {
 
-    // Provide Logging Interceptor
     single {
         HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
     }
 
-    // Provide OkHttpClient
     single {
         OkHttpClient.Builder()
             .addInterceptor(get<HttpLoggingInterceptor>())
@@ -26,7 +27,6 @@ val appModule = module {
             .build()
     }
 
-    // Provide Retrofit
     single {
         Retrofit.Builder()
             .baseUrl("https://raw.githubusercontent.com/andreascandle/p2p_json_test/main/api/")
@@ -35,6 +35,10 @@ val appModule = module {
             .build()
     }
 
-    // Provide ApiService
     single { get<Retrofit>().create(ApiService::class.java) }
+
+    single<LoanRepository> { LoanRepositoryImpl(get()) }
+
+    single { LoanUseCase(get()) }
+
 }

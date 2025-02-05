@@ -22,7 +22,7 @@ data class BorrowerData(
     val email: String
 )
 
-data class LoadData(
+data class LoanData(
     val interestRate: Any,
     val amount: Int,
     val purpose: String,

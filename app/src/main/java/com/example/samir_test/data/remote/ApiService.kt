@@ -7,5 +7,5 @@ import retrofit2.http.GET
 interface ApiService {
 
     @GET("json/loans.json")
-    suspend fun getData() : Response<LoanResponse>
+    suspend fun getLoanData() : Response<List<LoanResponse>>
 }
